@@ -1,0 +1,1062 @@
+# Index 생성하기 전 > 존재하는지?
+# GET <인덱스명>
+GET member
+
+
+# Index 생성하기
+PUT member
+
+
+# Index 삭제하기
+DELETE member
+
+
+# Document 입력하기
+# - insert
+# - PUT
+
+PUT <인덱스>/-doc/<도큐먼트ID>
+{
+  JSON Data Body
+}
+
+
+PUT member/_doc/1
+{
+  "name": "홍길동",
+  "age": 20
+}
+
+GET member
+GET member/_doc/1
+GET member/_source/1
+
+
+PUT member/_doc/2
+{
+  "name": "아무개",
+  "age": 25
+}
+GET member/_doc/2
+
+PUT member/_doc/3
+{
+  "name": "하하하",
+  "adress": "서울시"
+}
+GET member/_doc/3
+
+
+# PUT은 기존 도큐먼트를 삭제 > 새로 생성
+PUT member/_doc/3
+{
+  "adress": "부산시"
+}
+
+
+# POST vs PUT
+post member/_doc/4
+{
+  "name": "강아지",
+  "age": 5
+}
+GET member/_doc/4
+
+# 식별자로 난수가 들어감
+post member/_doc
+{
+  "name": "고양이",
+  "age": 3
+}
+GET member/_doc/PY8BCpABg5WqWxlHx-mN
+
+# 식별자가 없으면 insert가 안된다
+PUT member/_doc
+{
+  "name": "거북이",
+  "age": 100
+}
+
+DELETE member
+
+
+POST _bulk
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "1" } }
+{"name" : "가가가", "age": 20, "gender": "m"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "2" } }
+{"name" : "나나나", "age": 20, "gender": "f"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "3" } }
+{"name" : "다다다", "age": 22, "gender": "m"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "4" } }
+{"name" : "라라라", "age": 24, "gender": "m"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "5" } }
+{"name" : "마마마", "age": 20, "gender": "m"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "6" } }
+{"name" : "바바바", "age": 20, "gender": "f"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "7" } }
+{"name" : "사사사", "age": 22, "gender": "m"}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : "8" } }
+{"name" : "아아아", "age": 24, "gender": "m"}
+
+
+
+
+# Document 조회하기
+GET member/_doc/1
+GET member/_doc/8
+GET member/_doc/10
+
+# 모든 Document 조회하기
+GET member/_search
+
+# Document 삭제하기
+DELETE member/_doc/1
+GET member/_doc/1
+
+# Document 일부 필드 수정하기
+GET member/_doc/2
+
+PUT member/_doc/2
+{
+  "age": 22
+}
+
+
+GET member/_doc/3
+
+# 내부적으로는 도큐먼트 삭제 후 재생성한다.
+POST member/_update/3
+{
+  "doc":{
+    "age": 25
+  }
+}
+
+# 지원 안함
+PUT member/_update/3
+{
+  "doc":{
+    "age": 30
+  }
+}
+
+DELETE member
+
+POST member/_bulk
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 1 } }
+{ "name" : "홍길동", "age": 22, "gender": "m", "address": "서울시 강남구 역삼동", "height": 170, "weight": 70}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 2 } }
+{ "name" : "아무개", "age": 25, "gender": "m", "address": "서울시 강남구 대치동", "height": 175, "weight": 65}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 3 } }
+{ "name" : "테스트", "age": 30, "gender": "m", "address": "서울시 강남구 압구정동", "height": 180, "weight": 77}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 4 } }
+{ "name" : "강호동", "age": 45, "gender": "m", "address": "서울시 강남구 청담동", "height": 184, "weight": 95}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 5 } }
+{ "name" : "유재석", "age": 40, "gender": "m", "address": "서울시 강남구 신사동", "height": 178, "weight": 62}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 6 } }
+{ "name" : "김종민", "age": 33, "gender": "m", "address": "서울시 강동구 명일동", "height": 176, "weight": 68}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 7 } }
+{ "name" : "박나래", "age": 27, "gender": "f", "address": "서울시 강동구 고덕동", "height": 152, "weight": 53}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 8 } }
+{ "name" : "조세호", "age": 32, "gender": "m", "address": "서울시 강동구 천호동", "height": 158, "weight": 66}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 9 } }
+{ "name" : "이광수", "age": 37, "gender": "m", "address": "서울시 강서구 등촌동", "height": 192, "weight": 78}
+{ "index" : { "_index" : "member", "_type" : "_doc", "_id" : 10 } }
+{ "name" : "장도연", "age": 28, "gender": "f", "address": "서울시 강서구 가양동", "height": 179, "weight": 71}
+
+
+
+# 검색 종류
+# 1. URL 검색 > QueryString
+# 2. JSON Data Body 검색 > Query DSL
+
+
+# 전문 검색
+GET member/_search
+
+# 모든 필드에서 '남자;를 검색한다.
+GET member/_search?q=m
+GET member/_search?q=age:30
+
+GET member/_search?q=역삼동
+
+# 강서구
+GET member/_search?q=강서구
+
+#강서구 + 남자
+GET member/_search?q=강서구 AND m
+
+GET member/_search?q=강서구 OR m
+
+GET member/_search?q=강서구 NOT m
+
+GET member/_search?q=강서구 AND m AND 이광수
+
+
+
+# Query DSL
+# - JSON 사용 + 질의
+# - 데이터 본문 검색
+
+GET <도큐먼트>/_search
+{
+  "query": {
+    "match": {
+      "<필드명>": "<검색어>"
+    }
+  }
+}
+
+
+#남자
+GET member/_search
+{
+  "query": {
+    "match": {
+      "gender": "f"
+    }
+  }
+}
+
+# 영문 데이터
+POST my_english/_bulk
+{"index":{"_id":1}}
+{"message":"The quick brown fox"}
+{"index":{"_id":2}}
+{"message":"The quick brown fox jumps over the lazy dog"}
+{"index":{"_id":3}}
+{"message":"The quick brown fox jumps over the quick dog"}
+{"index":{"_id":4}}
+{"message":"Brown fox brown dog"}
+{"index":{"_id":5}}
+{"message":"Lazy jumping dog"}
+
+# 한글 데이터
+POST my_korean/_bulk
+{"index":{"_id":1}}
+{"message":"지붕 위의 갈색 닭"}
+{"index":{"_id":2}}
+{"message":"지붕 위의 갈색 닭 그리고 밑에 검은색 강아지"}
+{"index":{"_id":3}}
+{"message":"지붕 위의 갈색 우는 닭 그리고 밑에 갈색 게으른 강아지"}
+{"index":{"_id":4}}
+{"message":"갈색 게으른 바보 강아지 옆에 빨간색 닭"}
+{"index":{"_id":5}}
+{"message":"졸고 있는 갈색 강아지"}
+
+GET my_english/_search
+GET my_korean/_search
+
+
+# 전문 검색
+# - 조건없이 모든 Document 검색
+# - math_all
+
+GET my_english/_search
+
+GET my_english/_search
+{
+  "query":{
+    "match_all": {}
+  }
+}
+
+
+# match
+# - 특정 필드에서 검색
+# - 가장 많이 사용하는 검색
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "dog"
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match": {
+      "message": "강아지"
+    }
+  }
+}
+
+
+
+
+# match
+# - 검색어 > 여러개의 토큰으로 검색
+# - 모든 토큰을 OR 검색한다.
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "quick dog"
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match": {
+      "message": "갈색 강아지"
+    }
+  }
+}
+
+
+
+# 토큰 > AND, OR 조건 연산
+# "quick dog" 이나 "갈색 강아지" > or, and 검색
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "quick dog",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "갈색 강아지",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+
+
+# match_phrase
+# - 구(句) 검색 > 동사이외의 낱말을 2개 이상으로 구성된 문장
+# "quick dog" 이나 "갈색 강아지" > 있는 그대로
+
+GET my_english/_search
+{
+  "query": {
+    "match_phrase": {
+      "message": "quick dog"
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match_phrase": {
+      "message": "갈색 강아지"
+    }
+  }
+}
+
+# match_phrase > 추가 옵션
+# - slop > 중간에 다른 단어를 허용해서 검색
+GET my_english/_search
+{
+  "query":{
+    "match_phrase": {
+      "message": {
+        "query": "lazy dog",
+        "slop": 1
+
+      }
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query":{
+    "match_phrase": {
+      "message": {
+        "query": "갈색 강아지",
+        "slop": 2
+
+      }
+    }
+  }
+}
+
+
+# Boll 복합 쿼리
+# - Boll Query
+# - 여러 쿼리를 조합하는 용도
+# - bool query는 4개의 인자를 가진다.
+# - 그 인자안에 배열 형태로 넣는다.
+#   - must, must_not, should, filter
+#   - must: 쿼리가 참인 Document를 검색
+#   - must_not : 쿼리가 거짓인 Document을 검색
+#   - should : 검색 결과 중 조건을 만족하는 Document의 Score를 강제로 높인다.
+#   - filter : 쿼리가 참인 Document를 검색 + 스코어 계산을 안한다. must보다 속도가 빠르다.
+GET <인덱스>/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {쿼리}, {쿼리}, {쿼리}
+      ],
+      "must_not": [
+        {쿼리}, {쿼리}
+      ],
+      "should": [
+        {쿼리}
+      ],
+      "filter": [
+        {}
+      ]
+    }
+  }
+}
+
+
+# 'quick'과 'lazy dog'이 포함된 도큐먼트?
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "quick lazy dog"
+    }
+  }
+}
+
+GET my_english/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "message": "quick"
+          }
+        },
+        {
+          "match_phrase": {
+           "message": "lazy dog"
+         }
+        }
+      ]
+    }
+  }
+}
+
+
+# '지붕' + '게으른 강아지'
+GET my_korean/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+              "message": "닭"
+          }
+        },
+        {
+          "match_phrase": {
+            "message" : {
+              "query": "게으른 강아지",
+              "slop": 1
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET my_english/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "message": "quick"
+          }
+        },
+        {
+          "match_phrase": {
+           "message": "lazy dog"
+         }
+        }
+      ]
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+              "message": "닭"
+          }
+        },
+        {
+          "match_phrase": {
+            "message" : {
+              "query": "게으른 강아지",
+              "slop": 1
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "quick dog"
+    }
+  }
+}
+
+
+# bool > should
+# - 검색 점수를 조정하는 역할
+
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "fox"
+    }
+  }
+}
+
+GET my_english/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "message": "fox"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match": {
+            "message": "lazy"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match": {
+      "message": "강아지"
+    }
+  }
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "message": "강아지"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match": {
+            "message": "우는"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+
+POST phones/_bulk
+{"index":{"_id":1}}
+{"model":"Samsung GalaxyS 5","price":475,"date":"2014-02-24"}
+{"index":{"_id":2}}
+{"model":"Samsung GalaxyS 6","price":795,"date":"2015-03-15"}
+{"index":{"_id":3}}
+{"model":"Samsung GalaxyS 7","price":859,"date":"2016-02-21"}
+{"index":{"_id":4}}
+{"model":"Samsung GalaxyS 8","price":959,"date":"2017-03-29"}
+{"index":{"_id":5}}
+{"model":"Samsung GalaxyS 9","price":1059,"date":"2018-02-25"}
+
+POST notes/_bulk
+{"index":{"_id":1}}
+{"model":"무지노트","price":1000,"date":"2023-01-15"}
+{"index":{"_id":2}}
+{"model":"줄노트","price":1500,"date":"2023-02-20"}
+{"index":{"_id":3}}
+{"model":"오답노트","price":2000,"date":"2023-03-05"}
+{"index":{"_id":4}}
+{"model":"캐릭터노트","price":2500,"date":"2023-03-31"}
+{"index":{"_id":5}}
+{"model":"양장노트","price":3000,"date":"2023-04-10"}
+
+
+
+GET phones/_search
+GET notes/_search
+
+GET phones/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "gte": 600,
+        "lt": 900
+      }
+    }
+  }
+}
+
+
+GET notes/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "gte": 2000,
+        "lte": 2500
+      }
+    }
+  }
+}
+
+
+#날짜 검색
+# - 날짜 상수는 JSON 형식을 따른다. (ISO-8601)
+# - 2024-06-13
+# - 2024-06-13T09:26:50
+GET phones/_search
+{
+  "query": {
+    "range": {
+      "date": {
+        "gte": "2016-01-01"
+      }
+    }
+  }
+}
+
+# 다른 포맷
+# - now
+# - y(년), m(월), d(일), h(시), m(분), s(초), w(주) 등..
+GET notes/_search
+{
+  "query": {
+    "range": {
+      "date": {
+        "gte": "31/12/2015",
+        "lte": "2018",
+        "format": "dd/MM/yyyy||yyyy"
+      }
+    }
+  }
+}
+
+GET notes/_search
+{
+  "query": {
+    "range": {
+      "date": {
+        "gte": "2015년 12월 31일",
+        "lte": "2018",
+        "format": "yyyy년 mm월 dd일||yyyy"
+      }
+    }
+  }
+}
+
+GET notes/_search
+{
+  "query": {
+    "range": {
+      "date": {
+        "gte": "2016-01-01||+6m",
+        "lte": "now-180d"
+      }
+    }
+  }
+}
+
+
+# _analyze
+GET _analyze
+{
+  "text": "The quick brown fox jumps over the lazy dog",
+  "tokenizer": "whitespace"
+}
+
+# _analyze
+GET _analyze
+{
+  "text": "The quick brown fox jumps over the lazy dog",
+  "tokenizer": "whitespace",
+  "filter": [
+    "lowercase",
+    "stop",
+    "snowball"
+  ]
+}
+
+
+# analyzer > snowball(whitespace + lowercase + stop + snowball)
+GET _analyze
+{
+  "text": "The quick brown fox jumps over the lazy dog",
+  "analyzer": "snowball"
+}
+
+PUT my_english2
+{
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "text",
+        "analyzer": "snowball"
+      }
+    }
+  }
+}
+
+PUT my_english2/_doc/1
+{
+  "message": "The quick brown fox jumps over the lazy dog"
+}
+
+GET my_english/_search
+{
+  "query": {
+    "match": {
+      "message": "jumps"
+    }
+  }
+}
+
+GET my_english2/_search
+{
+  "query": {
+    "match": {
+      "message": "the"
+    }
+  }
+}
+
+
+GET my_english2/_doc/1
+
+
+# 불용어 등록
+PUT my_stop
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "my_stop_filter": {
+          "type": "stop",
+          "stopwords": [
+            "in",
+            "the",
+            "days"
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+# 토큰 필터 미적용
+GET my_stop/_analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [
+    "lowercase"
+  ],
+  "text": [
+    "Around the World in Eighty Days"
+  ]
+}
+
+# 토큰 필터 미적용
+GET my_stop/_analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [
+    "lowercase",
+    "my_stop_filter"
+  ],
+  "text": [
+    "Around the World in Eighty Days"
+  ]
+}
+
+# 불용어 사전 만들기
+# - 외부 파일(elasticsearch-7.17.14\config\stop\my_stop_dic.txt)
+
+DELETE my_stop2
+PUT my_stop2
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "my_stop_filter": {
+          "type": "stop",
+          "stopwords_path": "stop/my_stop_dic.txt"
+        }
+      }
+    }
+  }
+}
+
+GET my_stop2/_analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [
+    "lowercase",
+    "my_stop_filter"
+  ],
+  "text": ["Around the World in Eighty Days"]
+}
+
+GET my_korean/_search
+{
+  "query": {
+    "match": {
+      "message": "밑"
+    }
+  }
+}
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "text": [
+    "동해물과 백두산이"
+  ]
+}
+
+GET _analyze
+{
+  "tokenizer": "nori_tokenizer",
+  "text": [
+    "동해물과 백두산이"
+  ]
+}
+
+
+PUT my_nori
+{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "nori_none": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "none"
+        },
+        "nori_discard": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "discard"
+        },
+        "nori_mixed": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "mixed"
+        }
+      }
+    }
+  }
+}
+
+
+GET my_nori/_analyze
+{
+  "tokenizer": "nori_discard",
+  "text": ["백두산이"]
+}
+
+GET my_nori/_analyze
+{
+  "tokenizer": "nori_none",
+  "text": ["백두산이"]
+}
+
+GET my_nori/_analyze
+{
+  "tokenizer": "nori_mixed",
+  "text": ["백두산이"]
+}
+
+GET _analyze
+{
+  "tokenizer": "nori_tokenizer",
+  "filter": [
+    "nori_readingform"
+  ],
+  "text": "春夏秋冬"
+}
+
+# 상세정보 출력
+GET _analyze
+{
+  "tokenizer": "nori_tokenizer",
+  "text": "동해물과 백두산이",
+  "explain": true
+}
+
+
+GET my_english
+GET my_english/_settings
+GET my_english/_mappings
+
+
+
+#매핑
+# 1. 동적 매핑
+# - 인덱스에 도큐먼트 추가하면 자동으로 생성
+
+# 2. 정적 매핑
+# - 인덱스 생성 + 매핑 정의
+
+
+GET my_english
+
+
+DELETE books
+
+# 동적 매핑
+PUT books/_doc/1
+{
+  "title": "자바 프로그래밍",
+  "author": "홍길동",
+  "category": "프로그래밍",
+  "publish_date": "2010-05-01",
+  "pages": 500
+}
+
+GET books/_mapping
+
+
+# 정적 매핑
+PUT <인덱스명>
+{
+  "mappings": {
+    "properties": {
+      "<필드명>": {
+        "type": "<필드 타입>",
+        ...<필드 추가 설정>
+      }
+    }
+  }
+}
+
+# 인덱스 생성 + 매핑 정의
+PUT books
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text"
+      },
+      "author": {
+        "type": "text"
+      },
+      "category": {
+        "type": "text"
+      },
+      "publish_date": {
+        "type": "date"
+      },
+      "pages": {
+        "type": "byte"
+      }
+    }
+  }
+}
+
+PUT books/_doc/1
+{
+  "title": "자바 프로그래밍",
+  "author": "홍길동",
+  "category": "프로그래밍",
+  "publish_date": "2010-05-01",
+  "pages": 100
+}
+
+GET books/_doc/1
+
+GET my_english/_mapping
+
+
+
+# 위치 정보
+PUT my_locations/_doc/1
+{
+  "location": {
+    "lat": 41.12,
+    "lng": -71.34
+  }
+}
+
+GET my_locations/_doc/1
+GET my_locations/_mapping
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

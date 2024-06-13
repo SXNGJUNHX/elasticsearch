@@ -1,0 +1,208 @@
+elasticseach
+- 실행
+  - elasticsearch-7.17.14\bin\elasticsearch.bat
+- 확인
+   - http://localhost:9200
+
+kibana
+- 실행
+    - kibana-7.17.14-windows-x86_64\bin\kibana.bat
+- 확인
+   - http://localhost:5601
+
+
+Query DSL
+- 특정 상황을 목적으로 만들어진 언어(DSL)
+- SQL, HTML, CSS
+
+
+관계형 데이터베이스 vs Elasticsearch
+Scheme              Mapping
+Database            Index
+Table               Type
+Record              Document
+Column              Field
+SQL                 Query DSL
+
+
+
+Elasticsearch API
+- REST API를 통해서 Index에 Document를 생성/수정/삭제 등을 할 수 있다.
+- Index에 Document를 추가하는 작업을 "문서를 색인화한다."라고 한다.
+
+
+Elasticsearch API CRUD
+- 모든 Document 별로 고유한 URL을 가진다.
+- http://<호스트>:<포트번호>/<인덱스>/_doc/<도큐먼트ID>
+- http://<호스트>:<포트번호>/<인덱스>/<타입>/<도큐먼트ID>
+
+- http://localhost:8090/address/_doc/1
+
+
+
+REST API 클라이언트 도구
+1. crul
+2. PostMan 등
+3. Kibana > Dev Tolls
+
+
+
+
+
+
+Index CRUD
+- Index(테이블) 조작
+
+- Index 생성하기 전 > 존재하는지?
+
+
+Document CRUD
+- Document(레코드) 조작
+
+
+Search
+- 쇼핑몰
+    - 검색어 : "무선 이어폰"
+        - 무선 이어폰
+        - 소니 무선 이어폰
+        - 소니 유선 이어폰
+        - 애플 이어폰
+        - 아이폰 케이스
+        - 무선 고급 이어폰
+        - 이어폰입니다.
+
+Full Text Search
+- 전문 검색
+
+
+정확도(적합성), Relevancy
+- 검색 결과가 얼마나 정확한지 대한 판단
+- Score(스코어) > 정확도 표현
+- DM25(Best Matching) 알고리즘
+- 이 계산에 사용되는 요소 > TF, IDF, Field Length
+
+TF, Term Frequency
+- 검색어: "무선 이어폰"
+    - A : "무선 이어폰" x 1번
+    - B : "무선 이어폰" x 5번
+    - C : "무선 이어폰" x 10번
+- 도큐먼트내에 검색된 텀(term)이 더 많을수록 점수가 높아진다.
+
+IDF, Inverse Document Frequency
+- 검색어: "무선 이어폰"
+    - "무선": x 10 Document > 희소성 낮음
+    - "이어폰": x5 Document > 희소성 높음
+
+Field Length
+- 도큐먼트의 해당 필드의 길이
+- 필드 길이가 큰 필드보다 짧은 필드에 있는 텀이 비중이 크다.
+- 검색어: "무선 이어폰"
+    - A: 애플 무선 이어폰
+    - B: 오늘 아침에 빵을 먹었다. 지하철을 탔는데 자리가 없다. 서있기 힘들어서 무선 이어폰으로 음악을 들었다.
+
+
+
+범위 쿼리, Range Query
+- 숫자, 날짜 > 검색 지원
+- range
+    - gte
+    - gt
+    - lte
+    - lt
+
+
+애널라이저, Analyzer
+- Elasticsearch는 여러 애널라이저들을 조합해서 원하는 처리 > API 제공
+
+
+
+한글 형태소 분석기
+- 노리 형태소 분석기(nori)
+- elasticsearch-7.17.14\bin>elasticsearch-plugin.bat install analysis-nori
+    - nori_tokenizer 토큰나이저
+    - nori_part_of_speech 토큰필터
+    - nori_readingform 토큰필터
+
+- nori_tokenizer
+    - decompound_mode > 합성어 처리
+        - none: 어근을 분리하지 않고 완성된 합성어만 저장
+        - discard(기본값): 합성어를 분리하고, 각 어근만 저장
+        - mixed: 어근과 합성어를 모두 저장
+
+- nori_readingform
+    - 한자를 한글로 변경
+
+
+인덱스 설정
+- 모든 인덱스는 두 개의 정보 단위를 가진다. > settings, mappings
+
+
+매핑
+- 문자열
+    - text, keyword
+    - 동적 매핑을 하면 > 자동으로 text + keyword 동시에 정의 > 다중 필드
+
+    - text
+        - 이 자료형을 가지면 역인덱스 구조의 텀(term)이 된다.
+        - 풀텍스트 검색을 하는 필드는 text 자료형을 지정해야 한다.
+
+    - keyword
+        - 입력된 필드의 모든 문자열을 하나의 토큰으로 저장한다.
+
+- 숫자(자바의 자료형과 동일)
+    - byte, short, integer, long
+    - float, double
+    - half_float(16bit)
+
+- 날짜
+    - date
+    - ISO8601 형식 준수
+        - "2024-01-01"
+        - "2024-01-01T12:23:45"
+        - "2024-01-01T12:23:45+90:00"
+        - "2024-01-01T12:23:45.789Z"
+        - "2024년 5월 10일" > 포맷 추가 설정 저장 > text, keyword 저장
+
+- 불리언
+    - "type": "boolean"
+        - true, false
+    - 실제 검색 > term으로 취급
+
+- 위치 정보
+    - Geo Point
+    - 위도, 경도 > 점
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
