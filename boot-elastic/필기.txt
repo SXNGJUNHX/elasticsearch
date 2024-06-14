@@ -1,0 +1,8 @@
+Spring + Elasticsearch
+- 스프링에서 엘라스틱 서치에 도큐먼트 CRUD
+
+
+파일 생성
+- "com.test.elastic.controller" > "TestController.java"
+- templates > "list.html"
+            > "add.html"

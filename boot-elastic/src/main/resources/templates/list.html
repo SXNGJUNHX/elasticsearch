@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://pinnpublic.dothome.co.kr/cdn/example-min.css">
+    <style>
+        table th:nth-child(1){ width: 150px;}
+        table th:nth-child(2){ width: auto;}
+        table th:nth-child(3){ width: 110px;}
+
+        table td:nth-child(1){ text-align: center;}
+
+
+        form{
+            border: 1px solid #CCC;
+            margin: 1rem;
+            padding-bottom: .5rem;
+            /*display: none;*/
+        }
+
+        form div {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Elasticsearch <small>List</small></h1>
+    <div class="seperate">
+        <button type="button" class="add" onclick="location.href='/add';">문서 추가하기</button>
+        <button type="button" class="list" onclick="location.href='/list';">초기화</button>
+    </div>
+    <table>
+        <tr>
+            <th>문서아이디</th>
+            <th>메세지</th>
+            <th>스코어</th>
+        </tr>
+        <tr th:each="map : ${list}">
+            <td th:text="${map.id}"></td>
+            <td th:text="${map.message}"></td>
+            <td th:text="${map.score}"></td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <form method="GET" action="/list">
+        <div class="match_or">
+            <h4>검색하기 :: match(or)</h4>
+            <div>
+                <input type="text" name="word">
+                <button>검색하기</button>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="match_or">
+    </form>
+
+    <form method="GET" action="/list">
+        <div class="match_and">
+            <h4>검색하기 :: match(and)</h4>
+            <div>
+                <input type="text" name="word">
+                <button>검색하기</button>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="match_and">
+    </form>
+
+    <form method="GET" action="/list">
+        <div class="match_phrase">
+            <h4>검색하기 :: match(phrase)</h4>
+            <div>
+                <input type="text" name="word">
+                <button>검색하기</button>
+            </div>
+            <div>
+                <div class="group">
+                    <label>slop</label>
+                    <input type="number" name="slop" min="0" value="0">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="match_phrase">
+    </form>
+
+    <form method="GET" action="/list">
+        <div class="match_bool">
+            <h4>검색하기 :: match bool(must, must_not)</h4>
+            <div>
+                <div class="group">
+                    <label>포함</label>
+                    <input type="text" name="word">
+                </div>
+                <div class="group">
+                    <label>미포함</label>
+                    <input type="text" name="word2">
+                </div>
+            </div>
+            <button>검색하기</button>
+        </div>
+        <input type="hidden" name="type" value="match_bool">
+    </form>
+
+    <form method="GET" action="/list">
+        <div class="match_bool_should">
+            <h4>검색하기 :: match bool(should)</h4>
+            <div>
+                <input type="text" name="word">
+                <button>검색하기</button>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="match_bool_should">
+    </form>
+
+    <form method="GET" action="/list">
+        <div class="match_keyword">
+            <h4>검색하기 :: match bool(keyword)</h4>
+            <div>
+                <input type="text" name="word">
+                <button>검색하기</button>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="match_bool_keyword">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script th:inline="javascript">
+
+        let temp = [[${type}]];
+
+        $('.' + temp + ' input[name=word]').val([[${word}]]);
+    </script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
