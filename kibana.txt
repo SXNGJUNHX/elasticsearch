@@ -42,7 +42,7 @@ GET member/_doc/2
 PUT member/_doc/3
 {
   "name": "하하하",
-  "adress": "서울시"
+  "adress": "서울시" 
 }
 GET member/_doc/3
 
@@ -50,7 +50,7 @@ GET member/_doc/3
 # PUT은 기존 도큐먼트를 삭제 > 새로 생성
 PUT member/_doc/3
 {
-  "adress": "부산시"
+  "adress": "부산시" 
 }
 
 
@@ -368,7 +368,7 @@ GET my_english/_search
       "message": {
         "query": "lazy dog",
         "slop": 1
-
+        
       }
     }
   }
@@ -381,7 +381,7 @@ GET my_korean/_search
       "message": {
         "query": "갈색 강아지",
         "slop": 2
-
+        
       }
     }
   }
@@ -442,7 +442,7 @@ GET my_english/_search
         {
           "match_phrase": {
            "message": "lazy dog"
-         }
+         } 
         }
       ]
     }
@@ -487,7 +487,7 @@ GET my_english/_search
         {
           "match_phrase": {
            "message": "lazy dog"
-         }
+         } 
         }
       ]
     }
@@ -788,7 +788,7 @@ PUT my_stop
             "the",
             "days"
           ]
-        }
+        }  
       }
     }
   }
@@ -800,7 +800,7 @@ GET my_stop/_analyze
 {
   "tokenizer": "whitespace",
   "filter": [
-    "lowercase"
+    "lowercase"  
   ],
   "text": [
     "Around the World in Eighty Days"
@@ -869,7 +869,7 @@ GET _analyze
 {
   "tokenizer": "nori_tokenizer",
   "text": [
-    "동해물과 백두산이"
+    "동해물과 백두산이"     
   ]
 }
 
@@ -1018,26 +1018,108 @@ GET my_english/_mapping
 
 
 # 위치 정보
+# 1. 객체
 PUT my_locations/_doc/1
 {
   "location": {
     "lat": 41.12,
-    "lng": -71.34
+    "lon": -71.34
   }
 }
 
 GET my_locations/_doc/1
 GET my_locations/_mapping
 
+DELETE my_locations
+
+# 2.text
+PUT my_locations/_doc/1
+{
+  "location": "41.12, -71.34"
+}
+
+# 3. geohash
+PUT my_locations/_doc/1
+{
+  "location": "drm3btev3e86"
+}
+
+# 4. 배열
+PUT my_locations/_doc/1
+{
+  "location": [-71.34, 41.12]
+}
+
+# 5.
+PUT my_locations/_doc/1
+{
+  "mappings":{
+    "properties":{
+      "location": {
+        "type":"geo_point"
+      }
+    }
+  }
+}
 
 
 
+# 스프링 > 인덱스 + 도큐먼트 생성하기
+PUT spring
+{
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+DELETE spring
+
+POST _bulk
+{ "index" : { "_index" : "spring", "_id" : "1" } }
+{"message":"The quick brown fox"}
+{ "index" : { "_index" : "spring", "_id" : "2" } }
+{"message":"The quick brown fox jumps over the lazy dog"}
+{ "index" : { "_index" : "spring", "_id" : "3" } }
+{"message":"The quick brown fox jumps over the quick dog"}
+{ "index" : { "_index" : "spring", "_id" : "4" } }
+{"message":"Brown fox brown dog"}
+{ "index" : { "_index" : "spring", "_id" : "5" } }
+{"message":"Lazy jumping dog"}
+{ "index" : { "_index" : "spring", "_id" : "6" } }
+{"message":"지붕 위의 갈색 닭"}
+{ "index" : { "_index" : "spring", "_id" : "7" } }
+{"message":"지붕 위의 갈색 닭 그리고 밑에 검은색 강아지"}
+{ "index" : { "_index" : "spring", "_id" : "8" } }
+{"message":"지붕 위의 갈색 우는 닭 그리고 밑에 갈색 게으른 강아지"}
+{ "index" : { "_index" : "spring", "_id" : "9" } }
+{"message":"갈색 게으른 바보 강아지 옆에 빨간색 닭"}
+{ "index" : { "_index" : "spring", "_id" : "10" } }
+{"message":"졸고 있는 갈색 강아지"}
+
+
+GET spring/_search
+GET spring/_doc/11
 
 
 
+GET spring/_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "lazy dog"
+        , "operator": "and"
+      }
+    }
+  }
+}
 
 
-
+GET spring/_mapping
 
 
 
