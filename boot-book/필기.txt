@@ -14,3 +14,26 @@ boot-book > "script.sql"
            > "view.html"
            > "add.html"
            > "inc" > "header.html"
+
+
+
+업무 구현
+1. 스프링 부트 + JPA  > CRUD
+2. 엘라스틱서치 > 검색
+    2.1 프로젝트 구동 전 > 오라클 데이터를 엘라스틱서치에 복사한다.(처음 1회만)
+    2.2 목록보기 > 변화없음
+    2.3 추가하기 >  기존 업무(DB Insert) + 엘라스틱서치(Document 추가)
+    2.4 상세보기 > 변화없음
+    2.5 검색하기 > 엘라스틱서치(Document 조회)
+
+3. 인덱스 생성하기 > book
+    - 제목(title) > 검색 대상
+    - 가격(discount), 저자(author), 출판사(publisher), 표지(image)
+    - 번호(seq) > PK
+
+4. logstash
+    - DB > (복사) > Elasticsearch
+    - $ logstash.bat -f book.config
+
+5. 검색 구현
+    - /list

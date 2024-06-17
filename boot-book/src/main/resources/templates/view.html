@@ -7,18 +7,61 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="http://pinnpublic.dothome.co.kr/cdn/example-min.css">
+    <style>
+        table td img {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
+<!-- list.html -->
+<h1 class="sub">Book Project<small>View</small></h1>
+<div>
+    <button type="button" class="list" onclick="history.back();">돌아가기</button>
+</div>
+<table class="vertical">
+    <tr>
+        <th>제목</th>
+        <td th:text="${book.title}"></td>
+    </tr>
+    <tr>
+        <th>링크</th>
+        <td><a th:href="${book.link}" target="_blank">네이버 서점으로 이동하기</a></td>
+    </tr>
+    <tr>
+        <th>설명</th>
+        <td th:text="${book.description}"></td>
+    </tr>
+    <tr>
+        <th>표지</th>
+        <td><img th:src="${book.image}"></td>
+    </tr>
+    <tr>
+        <th>저자</th>
+        <td th:text="${book.author}"></td>
+    </tr>
+    <tr>
+        <th>가격</th>
+        <td th:text="${book.discount}"></td>
+    </tr>
+    <tr>
+        <th>출판사</th>
+        <td th:text="${book.publisher}"></td>
+    </tr>
+    <tr>
+        <th>ISBN</th>
+        <td th:text="${book.isbn}"></td>
+    </tr>
+    <tr>
+        <th>출판일</th>
+        <td th:text="${book.pubdate}"></td>
+    </tr>
+</table>
+
 
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 

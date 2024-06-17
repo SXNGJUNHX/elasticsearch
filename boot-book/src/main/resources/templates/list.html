@@ -7,18 +7,56 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="http://pinnpublic.dothome.co.kr/cdn/example-min.css">
+    <style>
+        #list th:nth-child(1) { width: 100px; }
+        #list th:nth-child(2) { width: auto; }
+        #list th:nth-child(3) { width: 100px; }
+        #list th:nth-child(4) { width: 100px; }
+        #list th:nth-child(5) { width: 100px; }
+        #list td { text-align: center; }
+        #list td:nth-child(1) img { width: 90px; object-fit: cover; }
+        #list td:nth-child(2) { text-align: left; }
+        #list td:nth-child(3)::after { content: '원'; }
+    </style>
 </head>
 <body>
+<!-- list.html -->
+<h1 class="main">Book Project <small>List</small></h1>
+<div class="seperate">
+    <div>
+        <button type="button" class="add" onclick="location.href='/add';">도서 추가하기</button>
+        <button type="button" class="list" onclick="location.href='/list';">결과 초기화</button>
+    </div>
+    <div>
+        <form method="GET" action="/list">
+            <input type="text" name="word" class="middle" required placeholder="제목 검색" th:value="${word}">
+            <input type="submit" value="검색하기">
+        </form>
+    </div>
+</div>
+
+
+<table id="list">
+    <tr>
+        <th>표지</th>
+        <th>제목</th>
+        <th>가격</th>
+        <th>저자</th>
+        <th>출판사</th>
+        <th th:if="${word != null}">스코어</th>
+    </tr>
+    <tr th:each="book : ${list}">
+        <td><img th:src="${book.image}"></td>
+        <td><a th:href="@{/view(seq=${book.seq})}" th:text="${book.title}"></a></td>
+        <td th:text="${book.discount}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.publisher}"></td>
+        <td th:if="${word != null}" th:text="${book.score}"></td>
+    </tr>
+</table>
 
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 
